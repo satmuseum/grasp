@@ -1,0 +1,35 @@
+#----------------------------------------------------------------------
+# Any Makefile for an application below this directory should include
+# this file. It is used for building applications. The template for
+# libraries is in file Make_defs/include.
+#
+# Note: Order of library definition in each apllication file is *very*
+#       relevant. Last libraries *must* be the ones to apply first.
+# jpms.
+#----------------------------------------------------------------------
+
+#
+# Top-level targets
+#
+
+all: app app_chk app_dbg app_prof
+
+install: app
+
+#
+# Choose application to build
+#
+
+app:
+	$(MAKE) 'CXXFLAGS=$(CXXFLAGSO)' 'TGLIBDEF=$(TGLIBDEF)' 'T_APP=$(TG)' 'T_LIB=lib$(TG).a' 'T_LIBS=libs_o' make_app
+
+app_chk:
+	$(MAKE) 'CXXFLAGS=$(CXXFLAGSG)' 'TGLIBDEF=$(TGLIBGDEF)' 'T_APP=$(TG)_g' 'T_LIB=lib$(TG)_g.a' 'T_LIBS=libs_chk' make_app
+
+app_dbg:
+	$(MAKE) 'CXXFLAGS=$(CXXFLAGSFG)' 'TGLIBDEF=$(TGLIBFGDEF)' 'T_APP=$(TG)_fg' 'T_LIB=lib$(TG)_fg.a' 'T_LIBS=libs_dbg' make_app
+
+app_prof:
+	$(MAKE) 'CXXFLAGS=$(CXXFLAGSPG)' 'TGLIBDEF=$(TGLIBPGDEF)' 'T_APP=$(TG)_pg' 'T_LIB=lib$(TG)_pg.a' 'T_LIBS=libs_prof' make_app
+
+#----------------------------------------------------------------------

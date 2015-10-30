@@ -1,0 +1,76 @@
+#------------------------------------------------------------------------------
+# Templates for libraries, applications and utilities used by the
+# different Makefiles.
+# jpms.
+#------------------------------------------------------------------------------
+
+# Libraries
+
+make_lib:
+	@-(if $(TEST) -e $(T_LIB); then		\
+		$(AR) vxo $(T_LIB);		\
+	fi;)
+	$(MAKE) 'CXXFLAGS=$(CXXFLAGS)' 'T_LIB=$(T_LIB)' $(T_LIB)
+	@-$(RANLIB) $(T_LIB)
+	@-(if $(TEST) ! -e $(LIBDIR)/$(T_LIB); then	\
+		ln -s $(TGDIR)/$(T_LIB) $(LIBDIR);	\
+	fi;)
+	@-(if $(TEST) -e *.1; then	\
+		ln -s *.1 $(MANDIR);	\
+	fi;)
+	@-$(RM) *.o
+
+$(T_LIB):	$(T_LIB)($(TGOBJ))
+
+
+
+# Applications
+
+make_app:
+	(cd $(SRCDIR)/libs; \
+	$(MAKE) 'LIB_DIRS=$(LIB_DIRS)' 'CXXFLAGS=$(CXXFLAGS)' $(T_LIBS))
+	(cd $(TGDIR); \
+	$(MAKE) 'CXXFLAGS=$(CXXFLAGS)' 'T_LIB=$(T_LIB)' make_lib; \
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -o $(T_APP) $(T_LIB) $(TGLIBDEF) $(LDFLAGS))
+	@(if $(TEST) ! -e $(BINDIR)/$(T_APP); then \
+		ln -s $(TGDIR)/$(T_APP) $(BINDIR); \
+	fi;)
+	@-(if $(TEST) -e *.1; then	\
+		ln -s *.1 $(MANDIR);	\
+	fi;)
+
+
+# Utilities
+
+clean:
+	/bin/rm -f *.o *$(TG)*.a $(LIBDIR)/*$(TG)*.a $(BINDIR)/$(HOSTTYPE)/* \
+	    [Tt]ags [Mm]ake.out malloc.out gmon.out lint leak
+
+clean_obj:
+	/bin/rm -f *.o
+
+touch:
+	touch *.cc *.hh
+
+#tags: _force
+#	@for i in $(PSRC) $(PHDR); do			\
+#	    cwd=`pwd`; ctags -a $$cwd/$$i;		\
+#	done;
+
+strip_depend:
+	sed '/^#--DO NOT CHANGE ANYTHING AFTER THIS LINE/,$$d' Makefile >mktemp
+	mv mktemp Makefile
+
+depend:
+	sed '/^#--DO NOT CHANGE ANYTHING AFTER THIS LINE/,$$d' Makefile >mktemp
+	echo '#--DO NOT CHANGE ANYTHING AFTER THIS LINE' >>mktemp
+	$(CXX) -M $(INCLUDES) $(TGSRC) >>mktemp
+	mv mktemp Makefile
+
+
+# E. Dependencies (example only)
+
+%.o : %.cc
+	$(CXX) -c $(CPPFLAGS) $(CXXFLAGS) $< -o $@
+
+#------------------------------------------------------------------------------

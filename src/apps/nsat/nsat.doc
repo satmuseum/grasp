@@ -1,0 +1,264 @@
+
+
+
+   1 March 1996                                                       NSAT(1)
+                                                               CNF SAT Solver
+
+
+   __________________________________________________________________________
+
+   NAME
+     nsat - CNF satisfiability solver (v2.0)
+
+   SYNOPSIS
+     nsat [ [+|-]D ] [ [+|-]V ] [ +B_b_a_c_k_t_r_a_c_k-_l_i_m_i_t ] [ +C_c_o_n_f_l_i_c_t-_l_i_m_i_t ] [
+     +S_a_t_a_b_a_s_e-_g_r_o_w_t_h-_l_i_m_i_t ] [ +T_m_a_x-_r_u_n_t_i_m_e ] [ +b_b_a_c_k_t_r_a_c_k-_m_o_d_e ] [
+     +d_d_e_c_i_s_i_o_n-_m_a_k_i_n_g ] [ +g_m_a_x-_c_o_n_f-_c_l_a_u_s_e-_s_i_z_e ] [ +i_i_m_p_l_i_c_a_t_i_o_n-_e_n_g_i_n_e ]
+     [ +m_m_u_l_t_i_p_l_e-_c_o_n_f_l_i_c_t_s ] [ +p_p_r_e_p_r_o_c_e_s_s-_m_o_d_e ] [ [+|-]u ] _f_i_l_e-_n_a_m_e
+   __________________________________________________________________________
+
+
+   DESCRIPTION
+     nsat is a front-end for GRASP (Generic seaRch Algorithm for Satisfiabil-
+     ity Problems), which permits reading Conjunctive Normal Form (CNF) for-
+     mulas in the DIMACS CNF format and allows configuring GRASP. GRASP
+     denotes a configurable algorithm for solving instances of the satisfia-
+     bility problem (SAT), which implements different techniques for pruning
+     the search space. GRASP can be used as the core search engine for dif-
+     ferent SAT-based tools or embedded in other application-specific tools.
+     This man page is valid for version 2.0 of GRASP.
+
+     Among other features, GRASP can realize different Boolean constraint
+     propagation procedures and can implement different forms of dependency-
+     directed backtracking, in both cases  exploiting the structure of the
+     problem instance and of the search. If a CNF formula is viewed as a
+     database of clauses, then GRASP solves instances of SAT by adding addi-
+     tional clauses to the clause database in order to prune the amount of
+     search. Different growth rates of the clause database are permitted. In
+     addition, several techniques are used to control how clauses are added
+     to the clause database.
+
+     Decision making in GRASP is supported by several heuristics, that are
+     chosen with the respective command-line argument. The decision making
+     procedure chosen affects decisively the run times for different
+     instances of SAT.
+
+   OPTIONS
+
+     [+|-]D
+        Run GRASP with (+) and without (-) DEBUG mode (the default).
+
+     [+|-]V
+        Run GRASP with (+) and without (-) VERBOSE mode (the default). Run-
+        ning with VERBOSE mode provides information on how the search
+        evolves.
+
+     +B_b_a_c_k_t_r_a_c_k-_l_i_m_i_t
+        Defines the maximum number of backtracks that can be used for solving
+        a given instance of SAT. GRASP quits if this number of backtracks is
+        reached.
+
+
+
+   nsat                                                                     1
+
+
+
+
+
+
+   NSAT(1)                                                       1 March 1996
+   CNF SAT Solver
+
+
+     +C_c_o_n_f_l_i_c_t-_l_i_m_i_t
+        Defines the maximum number of conflicts that can be used for solving
+        a given instance of SAT. GRASP quits if this number of conflicts is
+        reached. For non-chronological backtracking option +B should be used,
+        whereas option +C should be used with dynamic backtracking.
+
+     +T_m_a_x-_r_u_n_t_i_m_e
+        Defines the CPU time that can be used for solving a given instance of
+        SAT. GRASP quits if this run time is reached.
+
+     +S_d_a_t_a_b_a_s_e-_g_r_o_w_t_h-_l_i_m_i_t
+        Identifies a bound on the growth of the clause database. GRASP quits
+        is this bound is reached.
+
+     +b_b_a_c_k_t_r_a_c_k-_m_o_d_e
+        Can either be 'C' for chronological backtracking, 'N' for non-
+        chronological backtracking and 'D' for dynamic non-chronological
+        backtracking. With chronological backtracking the size of teh clause
+        database is contant.
+
+     +d_d_e_c_i_s_i_o_n-_m_a_k_i_n_g
+        Choice of decision making procedure. Currently, NSAT accepts the fol-
+        lowing _s_t_a_t_i_c decision making heuristics:
+
+        F Fixed order decision making. Initial order of the variables is
+          kept.
+
+        LCS
+          Prefer variables with the largest combined sum of literals.
+
+        LIS
+          Prefer variables with the largest individual sum of literals.
+
+        JW
+          Static implementation of the Jeroslow-Wang heuristic, which gives
+          preference to assignments that simplify the smallest clauses.
+
+     In addition, NSAT accepts the following _d_y_n_a_m_i_c decision making heuris-
+     tics:
+
+        BOHM
+          Implements Max Bohm's heuristic (from Bohm's technical report).
+
+        MSMM
+          Customized version of MOM's heuristic (from Freeman's disserta-
+          tion).
+
+        MSOS
+          One-sided variation of Jeroslow-Wang heuristic that includes
+          weighted contributions of clauses that can be satisfied.
+
+        MSTS
+          Two-sided variation of the above heuristic.
+
+
+   2                                                                     nsat
+
+
+
+
+
+
+   1 March 1996                                                       NSAT(1)
+                                                               CNF SAT Solver
+
+
+        B2WS
+          Another variation of the above heuristic which gives more weight
+          given to clauses that can be satisfied by a given assignment.
+
+        DLIS
+          Dynamic LIS (i.e. for each decision assignment apply the LIS
+          heuristic).
+
+        DLCS
+          Dynamic LCS. Similar to DLIS, but using the LCS heuristic.
+
+     +g_m_a_x-_c_o_n_f-_c_l_a_u_s_e-_s_i_z_e
+        In the presence of conflicts, this option denotes the largest size of
+        identified conflicting clauses. This option guarantees a polynomial
+        growth of the clause database. By default, any clause can be added to
+        the clause database, and so the growth is exponential.
+
+     +i_i_m_p_l_i_c_a_t_i_o_n-_e_n_g_i_n_e
+        Defines the boolean constraint propagation procedure to apply after
+        each decision assignment is made. By default (or with +i0) Boolean
+        Constraint Propagation (BCP) is used. For the current implementation
+        only the default option is available.
+
+     +m_m_u_l_t_i_p_l_e-_c_o_n_f_l_i_c_t_s
+        Specifies that multiple conflicts are to be processed each time a
+        conflicting decision assignment is made. This technique allows choos-
+        ing the conflict that prunes the search tree the most.  _m_u_l_t_i_p_l_e-
+        _c_o_n_f_l_i_c_t_s identifies how multiple conflicts are to analysis options
+        are merged (M) and separate (S). Currently, only merged analysis can
+        be used.
+
+     +p_p_r_e_p_r_o_c_e_s_s-_m_o_d_e
+        Defines the engine to use for preprocessing purposes.
+
+     [+|-]r
+        Option (=) (the default) allows repacking a conflicting clause in
+        terms of decision assignments whenever the size of that conflicting
+        clause is too large.
+
+     [+|-]t
+        Option (+) (the default) allows for pruning unnecessary decision
+        assignments.
+
+     [+|-]u
+        Option (+) (the default) allows the identification of UIPs. UIPs per-
+        mit discovering structure in implication sequences, which provide
+        stronger pruning conditions.
+
+   ENVIRONMENT
+     The current implementation of nsat and GRASP does not allow for run time
+     configuration based on environment variables.
+
+
+
+
+   nsat                                                                     3
+
+
+
+
+
+
+   NSAT(1)                                                       1 March 1996
+   CNF SAT Solver
+
+
+   BUGS
+     No oustanding bugs are known as far as the author is aware. In addition,
+     there are no restrictions on the sizes of formulas and/or clauses.
+
+     Some features provided in version 1.0 have not yet been incorporated in
+     version 2.0.
+
+   SEE ALSO
+     GRASP was developed as the underlying search engine of a software pack-
+     age for the analysis of combinational switching circuits. The primary
+     reference is Joao P. Marques Silva, "Search Algorithms for Satisfiabil-
+     ity Problems in Combinational Switching Circuits", Ph. D. Dissertation,
+     EECS Department, University of Michigan, Ann Arbor, May 1995.
+
+   AUTHOR
+     Joao P. Marques Silva, EECS Department, University of Michigan
+     (jpms@eecs.umich.edu). Also, IST/INESC, Lisbon, Portugal (jpms@inesc.pt)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   4                                                                     nsat
+
+
+99

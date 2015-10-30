@@ -1,0 +1,30 @@
+
+	This is the README file for the my research software. See file
+INSTALL for installation directions. See the man directory for the man
+pages of the different packages. See below for currently available
+software and associated release dates.
+
+
+[7/18/96] More complete version of GRASP, that incorporates IGRASP for
+	  use on iterated instances of SAT. Additional applications
+	  include CSAT, a SAT tool for combinational circuits, and
+	  TG-GRASP, a prototype tool for test pattern generation.
+
+[3/25/96] Alpha release of the GRASP software package version 2.0 for
+	  solving the Satisfiability problem (SAT). GRASP is
+	  accompanied by NSAT, a front-end for GRASP for formulas in
+	  the DIMACS CNF format. It is also possible to use GRASP as a
+	  library of SAT algorithms that can be incorporated in
+	  different applications.
+
+
+jpms.
+
+_______________________________________________________________________________
+Joao P. Marques Silva				Email: jpms@inesc.pt
+						URL: http://esda.inesc.pt/~jpms
+INESC/IST ECE Dept.				
+R. Alves Redol, 9-3o				Phone: 351-1-3100399
+1000 Lisboa, Portugal				Fax:   351-1-3145843
+_______________________________________________________________________________
+

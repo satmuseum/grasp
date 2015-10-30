@@ -1,0 +1,55 @@
+
+This is the INSTALL file for the source code of the difference
+software packages derived or inspired by GRASP. To install a given
+package do the following:
+
+1- Make sure that GNU's make and binutils are available in your
+   machine. GRASP requires GNU make and other bin utils to build.
+
+2- Edit the GRASP.ENV.$mach file corresponding to the architecture of
+   your machine. Set the different environment variables according to
+   the system you are using and to the final location of the source
+   code tree. In case there is no GRAP.ENV file for your machine's
+   architecture, use one of the GRASP.ENV prototypes as an example.
+   Execute the command "source GRASP.ENV.$mach".
+
+3- By default, GNU g++, make, and the other GNU utilities and assumed
+   and used. The organization of each of the files Makefile and
+   Make_defs.include, found in the top directory, is based on this
+   choice. If you want to use a different compiler, you will have to
+   go over the Makefiles and change them as needed.
+
+4- Execute the command "printenv HOSTTYPE" and create a directory
+   $HOSTTYPE below the soft/bin directory.
+
+5- Execute the command "make hlinks" in order to install links in the
+   include directory for all header files in the source code tree.
+
+6- Execute the command "make depend" to establish the proper file
+   dependencies. This can be done on the top directory and
+   dependencies will be established for all directories below.
+
+7- Examine the Makefile and decide what to install. In addition, you
+   may also go to a specific directory and install only the package
+   you want.
+
+
+All packages have been installed and tested in SUN 4, DEC 5000/240 and
+PC/Linux machines, using GNU GCC version 2.7.2. However, with GCC it
+should be possible to install the software on other architectures.
+
+If you find any problems with the software or its installation,
+contact the author (see contact info below) describing the problems
+you have found.
+
+
+-- Joao
+
+_______________________________________________________________________________
+Joao P. Marques Silva				Email: jpms@inesc.pt
+						URL: http://esda.inesc.pt/~jpms
+INESC/IST ECE Dept.				
+R. Alves Redol, 9-3o				Phone: 351-1-3100399
+1000 Lisboa, Portugal				Fax:   351-1-3145843
+_______________________________________________________________________________
+

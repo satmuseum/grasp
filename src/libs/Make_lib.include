@@ -1,0 +1,32 @@
+#----------------------------------------------------------------------
+# Any Makefile for a library below this directory should include this
+# file. It is used for building a library. The template for libraries
+# is in file Make_defs/include.
+# jpms.
+#----------------------------------------------------------------------
+
+#
+# Top-level targets
+#
+
+all: lib lib_chk lib_dbg lib_prof
+
+install: lib
+
+#
+# Choose library to build
+#
+
+lib:
+	$(MAKE) 'CXXFLAGS=$(CXXFLAGSO)' 'T_LIB=lib$(TG).a' make_lib
+
+lib_chk:
+	$(MAKE) 'CXXFLAGS=$(CXXFLAGSG)' 'T_LIB=lib$(TG)_g.a' make_lib
+
+lib_dbg:
+	$(MAKE) 'CXXFLAGS=$(CXXFLAGSFG)' 'T_LIB=lib$(TG)_fg.a' make_lib
+
+lib_prof:
+	$(MAKE) 'CXXFLAGS=$(CXXFLAGSPG)' 'T_LIB=lib$(TG)_pg.a' make_lib
+
+#----------------------------------------------------------------------

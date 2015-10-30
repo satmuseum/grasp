@@ -1,0 +1,62 @@
+#------------------------------------------------------------------------------
+# Definitions common to all Makefiles.
+#
+# Date:		03/20/96
+# Author:	jpms.
+#------------------------------------------------------------------------------
+
+# A. Directory variables
+
+SOFTDIR	= $(GRASP_PATH)
+SRCDIR 	= $(SOFTDIR)/src
+INCDIR	= $(SOFTDIR)/include
+BINDIR	= $(SOFTDIR)/bin/$(HOSTTYPE)
+LIBDIR	= $(SOFTDIR)/lib
+DOCDIR	= $(SOFTDIR)/doc
+MANDIR	= $(SOFTDIR)/man
+
+UTILGNUBIN	= $(UTIL_BIN_PATH)
+UTILBIN		= $(UTIL_BIN_PATH)
+
+
+# B. Other variables
+
+CCINC	= $(CC_INC_PATH)
+CXXINC	= $(CXX_INC_PATH)
+LNXINCS	= $(LNX_INC_PATH)
+
+INCLUDES	= -I$(CXXINC) -I$(CCINC) $(LNXINCS) -I$(INCDIR)
+
+
+# C. Programs
+
+MAKE		= $(UTILBIN)/make
+AR		= $(UTILGNUBIN)/ar
+RANLIB		= $(UTILGNUBIN)/ranlib
+RM		= rm
+TEST		= $(UTILBIN)/test
+CPPFLAGS	=
+CXXFLAGS	= -Winline $(INCLUDES)
+#CXXFLAGSO	= -Winline $(INCLUDES) -finline-functions -O3 -DMEMG
+CXXFLAGSO	= -Winline $(INCLUDES) -finline-functions -O2 -DMEMG
+CXXFLAGSG	= -Winline $(INCLUDES) -g -DCHCK -DSTATS
+CXXFLAGSFG	= -Winline $(INCLUDES) -g -DDEBUG_1 -DDEBUG_0 -DCHCK -DSTATS
+CXXFLAGSPG	= -Winline $(INCLUDES) -pg -DSTATS
+LDFLAGS 	= -L$(LIBDIR)
+
+
+# D. Dependencies (example only)
+
+%.o : %.cc
+	$(CXX) -c $(CPPFLAGS) $(CXXFLAGS) $< -o $@
+
+(%.o): %.o
+	$(AR) cr $@ $*.o
+	$(RM) $*.o
+
+##(%.o): %.cc
+##	$(CXX) -c $(CPPFLAGS) $(CXXFLAGS) $< -o $*.o
+##	$(AR) cr $@ $*.o
+##	$(RM) $*.o
+
+#------------------------------------------------------------------------------
